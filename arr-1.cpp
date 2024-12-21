@@ -42,6 +42,7 @@ int main()
     readArrayData(arr1, length);
     printArrayData(arr1, length);
     cout << "************************\n";
-    cout << "the Sum of array : " << calculateSum(arr1, length) << endl;
-    cout << "the Average of array : " << calculateAverage(arr1, length) << endl;
+    int sum = calculateSum(arr1, length);
+    cout << "the Sum of array : " << sum << endl;
+    cout << "the Average of array : " << (float)sum / length << endl;
 }
