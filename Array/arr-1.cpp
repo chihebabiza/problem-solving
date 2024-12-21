@@ -17,8 +17,23 @@ void printArrayData(int arr[100], int length)
     cout << "Display the array\n";
     for (int i = 0; i < length; i++)
     {
-        cout << arr << "[" << i << "] : " << arr[i] << "\n";
+        cout << "number[" << i << "] : " << arr[i] << "\n";
     }
+}
+
+int calculateSum(int arr[100], int length)
+{
+    int sum = 0;
+    for (int i = 0; i < length; i++)
+    {
+        sum += arr[i];
+    }
+    return sum;
+}
+
+float calculateAverage(int arr[100], int length)
+{
+    return (float)calculateSum(arr, length) / length;
 }
 
 int main()
@@ -26,4 +41,7 @@ int main()
     int arr1[100], length = 0;
     readArrayData(arr1, length);
     printArrayData(arr1, length);
+    cout << "************************\n";
+    cout << "the Sum of array : " << calculateSum(arr1, length) << endl;
+    cout << "the Average of array : " << calculateAverage(arr1, length) << endl;
 }
