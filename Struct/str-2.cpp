@@ -52,7 +52,7 @@ void printPersonInfo(strInfo persons[100], int length)
 int main()
 {
     strInfo persons[100];
-    int numberOfPersons = 0;
+    int numberOfPersons = 1;
     readPersonInfo(persons, numberOfPersons);
     printPersonInfo(persons, numberOfPersons);
 
