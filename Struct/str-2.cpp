@@ -29,10 +29,32 @@ void printInfo(strInfo info)
     cout << "**************************" << endl;
 }
 
+void readPersonInfo(strInfo persons[100], int &length)
+{
+    cout << "Enter number of persons wnat to read\n";
+    cin >> length;
+    for (int i = 0; i < length; i++)
+    {
+        cout << "The person " << i + 1 << " Info\n";
+        readInfo(persons[i]);
+        cout << "*******************************\n";
+    }
+}
+
+void printPersonInfo(strInfo persons[100], int length)
+{
+    for (int i = 0; i < length; i++)
+    {
+        printInfo(persons[i]);
+    }
+}
+
 int main()
 {
-    strInfo person1;
-    readInfo(person1);
-    printInfo(person1);
+    strInfo persons[100];
+    int numberOfPersons = 0;
+    readPersonInfo(persons, numberOfPersons);
+    printPersonInfo(persons, numberOfPersons);
+
     return 0;
 }
