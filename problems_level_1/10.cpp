@@ -16,9 +16,9 @@ float CalulateAVerage(int Num1, int Num2, int Num3)
     return (float)(Num1 + Num2 + Num3) / 3;
 }
 
-void PrintResults(float Total)
+void PrintResults(float Average)
 {
-    cout << "The total is " << Total << endl;
+    cout << "The total is " << Average << endl;
 }
 
 int main()
