@@ -21,10 +21,7 @@ stInfo readInfo()
 
 bool isAccepted(stInfo info)
 {
-    if (info.age > 21 && info.hasDriverLicence)
-        return true;
-    else
-        return false;
+    return (info.age > 21 && info.hasDriverLicence);
 }
 
 void printResult(stInfo info)
