@@ -1,0 +1,14 @@
+# Ignore the .vscode directory, which usually contains editor-specific settings
+.vscode/
+
+# Ignore all files by default
+*
+
+# Exception: Do not ignore any files with a .cpp extension
+!*.cpp
+
+# Exception: Do not ignore the .gitignore file itself
+!.gitignore
+
+# Explicitly track test.cpp (even though it matches the * pattern)
+test.cpp
