@@ -1,106 +1,165 @@
 #include <iostream>
 using namespace std;
 
-short ReadRoundNumber(string message)
-{
-    int numberOfRounds;
-    do
-    {
-        cout << message << "\n";
-        cin >> numberOfRounds;
-    } while (numberOfRounds < 0);
-    return numberOfRounds;
-}
-
 int RandomNumber(int from, int to)
 {
     return rand() % (to - from + 1) + from;
 }
 
-string PrintChoice(short number)
+short ReadRoundNumbers(string message)
 {
-    switch (number)
+    short rounds;
+    do
     {
-    case 1:
-        return "stone";
-    case 2:
-        return "paper";
-    case 3:
-        return "scissors";
+        cout << message << " (1 to 10): ";
+        cin >> rounds;
+    } while (rounds < 1 || rounds > 10);
+    return rounds;
+}
+
+enum enWinner
+{
+    Computer = 1,
+    Player = 2,
+    Draw = 3
+};
+
+enum enChoice
+{
+    Stone = 1,
+    Paper = 2,
+    Scissors = 3
+};
+
+string ChoiceToString(enChoice choice)
+{
+    switch (choice)
+    {
+    case Stone:
+        return "Stone";
+    case Paper:
+        return "Paper";
+    case Scissors:
+        return "Scissors";
     default:
-        return "";
+        return "Unknown";
     }
 }
 
-string PrintWinner(string user, string pc)
+string WinnerToString(enWinner winner)
 {
-    if (pc == user)
+    switch (winner)
     {
-        return "No Winner"; // It's a tie
-    }
-    else if (user == "stone" && pc == "paper")
-    {
-        return "pc"; // Paper beats stone
-    }
-    else if (user == "stone" && pc == "scissors")
-    {
-        return "user"; // Stone beats scissors
-    }
-    else if (user == "paper" && pc == "stone")
-    {
-        return "user"; // Paper beats stone
-    }
-    else if (user == "paper" && pc == "scissors")
-    {
-        return "pc"; // Scissors beats paper
-    }
-    else if (user == "scissors" && pc == "stone")
-    {
-        return "pc"; // Stone beats scissors
-    }
-    else if (user == "scissors" && pc == "paper")
-    {
-        return "user"; // Scissors beats paper
-    }
-    else
-    {
-        return "Invalid Input"; // Handle unexpected inputs
+    case Computer:
+        return "Computer";
+    case Player:
+        return "Player";
+    case Draw:
+        return "Draw";
+    default:
+        return "Unknown";
     }
 }
 
-void PrintRoundResults(short user, short pc, short i)
+enChoice PlayerChoose()
 {
-    cout << "Round " << i + 1 << "\n";
-    string pcChoice = PrintChoice(pc);
-    string userChoice = PrintChoice(user);
-    cout << "computer choice : " << pcChoice << "\n";
-    cout << "user choice : " << userChoice << "\n";
-    cout << "Winner : " << PrintWinner(userChoice, pcChoice) << "\n";
-}
-
-void PrintFinalResults(short numberOfRounds)
-{
-    cout << "you played " << numberOfRounds << "round\n";
-    
-}
-
-void StartGame(short numberOfRounds)
-{
-    short playerChoice, computerChoice;
-    for (int i = 0; i < numberOfRounds; i++)
+    short choice;
+    do
     {
-        cout << "____________________________________________\n";
-        cout << "Round " << i + 1 << " begin\n";
-        cout << "Choose [1]: stone, [2]: paper, [3]: scissors\n";
-        cin >> playerChoice;
-        computerChoice = RandomNumber(1, 3);
-        PrintRoundResults(playerChoice, computerChoice, i);
+        cout << "Enter Your choice (1: Stone, 2: Paper, 3: Scissors): ";
+        cin >> choice;
+    } while (choice < 1 || choice > 3);
+    return (enChoice)choice;
+}
+
+enChoice ComputerChoose()
+{
+    return (enChoice)RandomNumber(1, 3);
+}
+
+enWinner Winner(enChoice playerChoice, enChoice computerChoice)
+{
+    if (playerChoice == computerChoice)
+        return enWinner::Draw;
+    if ((playerChoice == enChoice::Stone && computerChoice == enChoice::Scissors) ||
+        (playerChoice == enChoice::Paper && computerChoice == enChoice::Stone) ||
+        (playerChoice == enChoice::Scissors && computerChoice == enChoice::Paper))
+    {
+        return enWinner::Player;
     }
+    return enWinner::Computer;
+}
+
+struct stRoundInfo
+{
+    enChoice ComputerChoice, UserChoice;
+    enWinner Winner;
+};
+
+stRoundInfo ReadRoundsInfo()
+{
+    stRoundInfo roundInfo;
+    roundInfo.UserChoice = PlayerChoose();
+    roundInfo.ComputerChoice = ComputerChoose();
+    roundInfo.Winner = Winner(roundInfo.UserChoice, roundInfo.ComputerChoice);
+    return roundInfo;
+}
+
+void PrintRoundResults(stRoundInfo roundInfo)
+{
+    cout << "Player choice: " << ChoiceToString(roundInfo.UserChoice) << "\n";
+    cout << "Computer choice: " << ChoiceToString(roundInfo.ComputerChoice) << "\n";
+    cout << "Winner: " << WinnerToString(roundInfo.Winner) << "\n";
+}
+
+struct stGameInfo
+{
+    short playerWinTimes = 0, computerWinTimes = 0, drawTimes = 0;
+};
+
+void StartGame(short rounds)
+{
+    stGameInfo gameInfo;
+    for (short i = 1; i <= rounds; i++)
+    {
+        cout << "\nRound [" << i << "] begins:\n";
+        stRoundInfo roundInfo = ReadRoundsInfo();
+        PrintRoundResults(roundInfo);
+
+        if (roundInfo.Winner == enWinner::Player)
+            gameInfo.playerWinTimes++;
+        else if (roundInfo.Winner == enWinner::Computer)
+            gameInfo.computerWinTimes++;
+        else
+            gameInfo.drawTimes++;
+    }
+
+    cout << "\nGame Over! Here are the results:\n";
+    cout << "Player Wins: " << gameInfo.playerWinTimes << "\n";
+    cout << "Computer Wins: " << gameInfo.computerWinTimes << "\n";
+    cout << "Draws: " << gameInfo.drawTimes << "\n";
+}
+
+void ClearScreen()
+{
+    system("clear"); // Clear screen for Linux/Mac
+}
+
+void CompleteGame()
+{
+    char complete = 'y';
+    do
+    {
+        ClearScreen();
+        StartGame(ReadRoundNumbers("Enter the number of rounds"));
+        cout << "Do you want to play another game? (y or n): ";
+        cin >> complete;
+    } while (complete == 'y' || complete == 'Y');
 }
 
 int main()
 {
     srand((unsigned)time(NULL));
-    StartGame(ReadRoundNumber("Enter the number of rounds"));
+    CompleteGame();
     return 0;
 }
