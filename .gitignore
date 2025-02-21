@@ -1,8 +1,8 @@
 # Ignore the .vscode directory, which usually contains editor-specific settings
 .vscode/
 
-# Ignore all files by default
-*
+# Ignore all files will .exe
+*.exe
 
 # Exception: Do not ignore any files with a .cpp extension
 !*.cpp
