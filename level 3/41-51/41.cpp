@@ -32,17 +32,26 @@ vector<string> SplitString(string S1, string delim = " ")
     return words;
 }
 
-void displayVector(vector<string> v)
+string ReverseWords(string S1)
 {
-    cout << "Tokens : " << v.size() << "\n";
-    for (string &i : v)
+    vector<string> words;
+    string S2 = "";
+    words = SplitString(S1);
+
+    vector<string>::iterator it = words.end();
+
+    while (it != words.begin())
     {
-        cout << i << endl;
+        --it;
+        S2 += *it + " ";
     }
+    S2 = S2.substr(0, S2.length() - 1);
+    return S2;
 }
 
 int main()
 {
-    displayVector(SplitString(ReadString()));
+    string S1 = ReadString();
+    cout << "\nString after reversing words : " << ReverseWords(S1);
     return 0;
 }
