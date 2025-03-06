@@ -6,7 +6,7 @@
 
 using namespace std;
 
-const string ClientsFileName = "data/data.txt";
+const string ClientsFileName = "../data/data.txt";
 
 struct sClient
 {
